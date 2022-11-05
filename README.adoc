@@ -1,0 +1,33 @@
+wcam - simple webcam snapshot tool
+--
+
+Cross compilation notes
+--
+This tool is created to mainly be used raspberry 3b (aarch64) and
+to compile from x64 machine do this:
+
+    rustup target install aarch64-unknown-linux-gnu
+
+    dnf install binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu
+
+Notice .cargo/config section for the linker:
+
+    cat .cargo/config  
+    [target.aarch64-unknown-linux-gnu]
+    linker = "aarch64-unknown-linux-gcc"
+
+glibc-devel dependencies should be present on the LD dir (natively on /usr/lib/)
+can be achieved with:
+
+    dnf install glibc-devel --forcearch aarch64 --installroot /var/lib/cross-compile/aarch64
+
+and then add the directoty to the search path:
+
+    export LD_LIBRAry_PATH+=/var/lib/cross-compile/aarch64
+
+build the target:
+
+    cargo build --target aarch64-unknown-linux-gnu
+
+
+

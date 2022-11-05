@@ -2,7 +2,7 @@ use std::io;
 use std::io::prelude::*;
 use std::fs::File;
 use std::time::Instant;
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use v4l::context;
 use v4l::buffer::Type;
 use v4l::io::traits::CaptureStream;
@@ -11,9 +11,21 @@ use v4l::video::Capture;
 use jpeg_decoder as jpeg;
 
 #[derive(Parser)]
+#[command(author, version, about, long_about = None)]
 struct Cli {
     #[arg(short, long="output")]
     output: String,
+
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    Test {
+        #[arg(short, long)]
+        list: bool,
+    },
 }
 
 fn main() -> io::Result<()> {
